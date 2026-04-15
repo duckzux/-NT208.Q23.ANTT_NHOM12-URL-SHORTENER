@@ -1,4 +1,4 @@
-<!--Trang đăng nhập-->
+<!--Trang chính-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/navbar.css">
     </head>
     <body>
         <header>
@@ -21,13 +22,31 @@
         </header>
         <main class="hero">
             <h1>URL SHORTENER</h1> 
-            <p style="color: aliceblue;">Shorten your URL and analytics click</p>
+            <p class="describe" style="color: aliceblue;">Shorten your URL and analytics click</p>
             <div class="main-box">
-            <div class="shortbox">
-                
+                <div class="input-group">
+                    <i class="fa-solid fa-link" aria-hidden="true"></i>
+                    <form class="formshort" action="">
+                        <input type="text" placeholder = "Paste your URL here" id="shortform" name="shortform">
+                        <button type="submit" class="btn-shorten">Rút gọn</button>
+                    </form>
+                </div>
+                <div class="options-link">
+                    <button class="btn-option" id="togglebtn">Tùy chọn</button>
+                    <div class="hidden" id="custom-box">
+                        <div class="custom-field">
+                            <label for="alias-group">Custom alias:</label>
+                            <input type="text" placeholder="Enter your alias here" id="alias-group" class="alias-group">
+                        </div>
+                        <div class="custom-field">
+                            <label for="date-group">Expiration date:</label>
+                            <input type="date" id="date-group" class="date-group">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
         </main>
+        <script src="js/shorten.js"></script>
 </body>
 </html>
 

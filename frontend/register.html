@@ -1,4 +1,4 @@
-<!--Trang đăng nhập-->
+<!--Trang đăng ký-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,13 +8,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/navbar.css">        
+        <link rel="stylesheet" href="css/form.css">
     </head>
     <body>
         <header>
             <nav class="nav-bar">
                 <div class="logo"><a href="index.html">URL SHORTENER</a></div>
                 <div class="nav-link">
-                    <a href="signin.html">Sign-in</a>
+                    <a href="signin.html">Login</a>
                     <a href="register.html" class="btn-reg">Register</a>
                 </div>
             </nav>
@@ -24,9 +26,7 @@
                 <h1>Register</h1>
                 <div class ="formbox">
                     <label for="mail">Email:</label><br>
-                    <input type="text" placeholder = "Enter email" id="mail" name="mail"><br>            
-                    <label for="usrname">Username: </label><br>
-                    <input type ="text" placeholder = "Enter username" id="usrname" name="usrname"><br>
+                    <input type="email" placeholder = "Enter email" id="mail" name="mail"><br>            
                     <label for="pwd">Password: </label><br>
                     <input type ="text" placeholder = "Enter password" id="pwd" name="pwd"><br>                
                     <label for="cfpwd">Confirm password:</label><br>
@@ -36,6 +36,7 @@
                 </div>    
             </form>
         </section>
+        <script src="js/auth.js"></script>
 </body>
 </html>
 

@@ -1,0 +1,56 @@
+:root{
+    --bg-gradient: linear-gradient(90deg, rgba(85, 84, 146, 1) 0%, rgba(30, 34, 64, 1) 100%);
+    --shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4);
+    --bg-btn: #3f4d73;
+    --white: #ffffff;
+}
+
+.hero{
+    margin: 50px auto 0;
+}
+
+.box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 230px;
+    align-content: center;
+    padding-top: 20px;
+}
+
+.box h3{
+    color: var(--bg-btn);
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.leftbox, .rightbox{
+    flex: 1;
+    display: inline-block;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.stat-number{
+    color: #3f4d73;
+    font-weight: 350;
+    font-size: 35px;
+}
+
+
+.title-sheet{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.title-sheet h2{
+    margin: 0;
+}
+
+.analyze{
+    color: #ffffff;
+}
+
