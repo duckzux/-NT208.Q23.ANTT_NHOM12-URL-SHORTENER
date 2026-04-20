@@ -1,40 +1,92 @@
-<!--POST: validate email (filter_var): pass>=6 chars, check trùng, 
-pass_hash(BCRYPT) INSERT USER, RESPONE 201-->
-
 <?php
-// Bật session và hiển thị lỗi cơ bản
+
 session_start();
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
-// Giả sử bạn đã có file cấu hình kết nối DB bằng PDO
-// require_once '../../config/database.php';
-// $pdo = Database::getInstance()->getConnection();
+if (!empty($_SERVER['HTTP_ORIGIN'])) {
+    header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
+    header('Vary: Origin');
+}
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
 
-$data = json_decode(file_get_contents("php://input"));
-
-if (!isset($data->email) || !isset($data->password)) {
-    http_response_code(400);
-    echo json_encode(["error" => "Vui lòng nhập đầy đủ thông tin"]);
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
     exit;
 }
 
-$email = $data->email;
-$password = password_hash($data->password, PASSWORD_BCRYPT); // Mã hóa mật khẩu
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method not allowed']);
+    exit;
+}
+
+require_once __DIR__ . '/../../config/database.php';
+
+$data = json_decode(file_get_contents('php://input'), true);
+if (!is_array($data)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid JSON payload']);
+    exit;
+}
+
+$email = strtolower(trim($data['email'] ?? ''));
+$password = (string) ($data['password'] ?? '');
+
+if ($email === '' || $password === '') {
+    http_response_code(400);
+    echo json_encode(['error' => 'Please provide email and password']);
+    exit;
+}
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid email format']);
+    exit;
+}
+
+if (strlen($password) < 6) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Password must be at least 6 characters']);
+    exit;
+}
 
 try {
-    // Chuẩn bị câu lệnh SQL để chống SQL Injection
-    $stmt = $pdo->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-    $stmt->execute([$email, $password]);
-    
-    http_response_code(201);
-    echo json_encode(["message" => "Đăng ký thành công"]);
-} catch (PDOException $e) {
-    if ($e->getCode() == 23000) { // Mã lỗi trùng lặp UNIQUE (email đã tồn tại)
+    $pdo = Database::getConnection();
+
+    $existingStmt = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1');
+    $existingStmt->execute(['email' => $email]);
+
+    if ($existingStmt->fetch()) {
         http_response_code(409);
-        echo json_encode(["error" => "Email đã được sử dụng"]);
-    } else {
-        http_response_code(500);
-        echo json_encode(["error" => "Lỗi server"]);
+        echo json_encode(['error' => 'Email already exists']);
+        exit;
     }
+
+    $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+
+    $insertStmt = $pdo->prepare('INSERT INTO users (email, password) VALUES (:email, :password)');
+    $insertStmt->execute([
+        'email' => $email,
+        'password' => $passwordHash,
+    ]);
+
+    $userId = (int) $pdo->lastInsertId();
+    $username = explode('@', $email)[0];
+
+    $_SESSION['user_id'] = $userId;
+
+    http_response_code(201);
+    echo json_encode([
+        'message' => 'Register successful',
+        'user' => [
+            'id' => $userId,
+            'email' => $email,
+            'username' => $username,
+        ],
+    ]);
+} catch (Throwable $error) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Server error during registration']);
 }
-?>

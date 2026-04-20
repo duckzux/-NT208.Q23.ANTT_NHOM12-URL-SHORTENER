@@ -1,0 +1,6 @@
+Options -Indexes
+
+# Block direct access to config files
+<FilesMatch "^(database|redis|app)\.php$">
+    Require all denied
+</FilesMatch>

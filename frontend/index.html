@@ -4,30 +4,28 @@
     <head>
         <title>URL Shortener</title>
         <meta charset="utf-8">
-        <meta name = "description" content="Đồ án Lập trình ứng dụng web by DucHanh">
+        <meta name="description" content="Đồ án Lập trình ứng dụng web by DucHanh">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/navbar.css">
+        <link rel="stylesheet" href="css/result.css">
     </head>
     <body>
         <header>
             <nav class="nav-bar">
                 <div class="logo"><a href="index.html">URL SHORTENER</a></div>
-                <div class="nav-link">
-                    <a href="signin.html">Sign-in</a>
-                    <a href="register.html" class="btn-reg">Register</a>
-                </div>
+                <div class="nav-link"></div>
             </nav>
         </header>
         <main class="hero">
-            <h1>URL SHORTENER</h1> 
-            <p class="describe" style="color: aliceblue;">Shorten your URL and analytics click</p>
+            <h1>URL SHORTENER</h1>
+            <p class="describe" style="color: alicewhite;">Shorten your URL and analytics click</p>
             <div class="main-box">
                 <div class="input-group">
                     <i class="fa-solid fa-link" aria-hidden="true"></i>
                     <form class="formshort" action="">
-                        <input type="text" placeholder = "Paste your URL here" id="shortform" name="shortform">
+                        <input type="text" placeholder="Paste your URL here" id="shortform" name="shortform">
                         <button type="submit" class="btn-shorten">Rút gọn</button>
                     </form>
                 </div>
@@ -45,8 +43,23 @@
                     </div>
                 </div>
             </div>
+
+            <div id="result-section" class="result-section hidden">
+                <div class="result-card">
+                    <span class="result-label">Short URL của bạn</span>
+                    <div class="result-url-box">
+                        <a id="result-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+                        <button class="btn-copy" id="btn-copy" title="Copy to clipboard">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="result-original" id="result-original"></p>
+                </div>
+            </div>
         </main>
+        <script src="js/api.js"></script>
+        <script src="js/auth.js"></script>
         <script src="js/shorten.js"></script>
-</body>
+    </body>
 </html>
 

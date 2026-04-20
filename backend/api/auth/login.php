@@ -1,37 +1,70 @@
 <?php
+
 session_start();
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
-// require_once '../../config/database.php';
-// $pdo = Database::getInstance()->getConnection();
+if (!empty($_SERVER['HTTP_ORIGIN'])) {
+    header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
+    header('Vary: Origin');
+}
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
 
-$data = json_decode(file_get_contents("php://input"));
-
-if (!isset($data->email) || !isset($data->password)) {
-    http_response_code(400);
-    echo json_encode(["error" => "Vui lòng nhập đầy đủ thông tin"]);
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
     exit;
 }
 
-$email = $data->email;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method not allowed']);
+    exit;
+}
 
-// Tìm user theo email
-$stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-$stmt->execute([$email]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+require_once __DIR__ . '/../../config/database.php';
 
-// Kiểm tra user có tồn tại và password có khớp không
-if ($user && password_verify($data->password, $user['password'])) {
-    // LƯU TRẠNG THÁI VÀO SESSION
-    $_SESSION['user_id'] = $user['id'];
-    
+$data = json_decode(file_get_contents('php://input'), true);
+if (!is_array($data)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid JSON payload']);
+    exit;
+}
+
+$email = strtolower(trim($data['email'] ?? ''));
+$password = (string) ($data['password'] ?? '');
+
+if ($email === '' || $password === '') {
+    http_response_code(400);
+    echo json_encode(['error' => 'Please provide email and password']);
+    exit;
+}
+
+try {
+    $pdo = Database::getConnection();
+
+    $stmt = $pdo->prepare('SELECT id, email, password FROM users WHERE email = :email LIMIT 1');
+    $stmt->execute(['email' => $email]);
+    $user = $stmt->fetch();
+
+    if (!$user || !password_verify($password, $user['password'])) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Invalid email or password']);
+        exit;
+    }
+
+    $_SESSION['user_id'] = (int) $user['id'];
+
     http_response_code(200);
     echo json_encode([
-        "message" => "Đăng nhập thành công",
-        "user_id" => $user['id']
+        'message' => 'Login successful',
+        'user' => [
+            'id' => (int) $user['id'],
+            'email' => $user['email'],
+            'username' => explode('@', $user['email'])[0],
+        ],
     ]);
-} else {
-    http_response_code(401);
-    echo json_encode(["error" => "Sai email hoặc mật khẩu"]);
+} catch (Throwable $error) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Server error during login']);
 }
-?>

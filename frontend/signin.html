@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>URL Shortener</title>
+        <title>URL Shortener - Sign In</title>
         <meta charset="utf-8">
-        <meta name = "description" content="Đồ án Lập trình ứng dụng web by DucHanh">
+        <meta name="description" content="Đồ án Lập trình ứng dụng web by DucHanh">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="stylesheet" href="css/style.css">
@@ -16,25 +16,24 @@
             <nav class="nav-bar">
                 <div class="logo"><a href="index.html">URL SHORTENER</a></div>
                 <div class="nav-link">
-                    <a href="signin.html">Sign-in</a>
-                    <a href="register.html" class="btn-reg">Register</a>
                 </div>
             </nav>
         </header>
-        <section id = "boxsignup">
-            <form class ="valform">
+        <section id="boxsignup">
+            <form class="valform">
                 <h1>Sign-in</h1>
-                <div class ="formbox">
+                <div class="formbox">
                     <label for="mail">Email: </label><br>
-                    <input type ="email" placeholder = "Enter email" id="mail" name="mail"><br>
+                    <input type="email" placeholder="Enter email" id="mail" name="mail" required><br>
                     <label for="pwd">Password: </label><br>
-                    <input type ="text" placeholder = "Enter password" id="pwd" name="pwd"><br>                
-                    <input type="submit" value="Sign-in">  
-                    <p style="font-weight: 300; font-size: 15px;">You don't have account?<a href="register.html" class="hr"> Register now!</a></p>
-                </div>    
+                    <input type="password" placeholder="Enter password" id="pwd" name="pwd" required><br>
+                    <input type="submit" value="Sign-in">
+                    <p style="font-weight: 300; font-size: 15px;">You don't have account? <a href="register.html" class="hr"> Register now!</a></p>
+                </div>
             </form>
         </section>
+        <script src="js/api.js"></script>
         <script src="js/auth.js"></script>
-</body>
+    </body>
 </html>
 

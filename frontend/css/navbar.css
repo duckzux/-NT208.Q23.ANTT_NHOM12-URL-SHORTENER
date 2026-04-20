@@ -51,3 +51,14 @@
     border-radius: 24px;
     padding: 7px 17px;
 }
+
+.nav-link .nav-username {
+    font-weight: 700;
+    background: var(--bg-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    box-shadow: 0 0 0 2px #a78bfa;
+    border-radius: 22px;
+    padding: 5px 12px;
+}
