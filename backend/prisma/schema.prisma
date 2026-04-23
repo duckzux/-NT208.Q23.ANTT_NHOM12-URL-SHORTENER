@@ -1,0 +1,46 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  urls      Url[]
+  @@map("users")
+}
+
+model Url {
+  id        Int          @id @default(autoincrement())
+  shortCode String       @unique @map("short_code")
+  longUrl   String       @map("long_url") @db.Text
+  userId    Int?         @map("user_id")
+  clicks    Int          @default(0)
+  expiresAt DateTime?    @map("expires_at")
+  createdAt DateTime     @default(now()) @map("created_at")
+  user      User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  events    ClickEvent[]
+  @@index([userId])
+  @@map("urls")
+}
+
+model ClickEvent {
+  id        Int      @id @default(autoincrement())
+  urlId     Int      @map("url_id")
+  ipAddress String?  @map("ip_address") @db.VarChar(45)
+  userAgent String?  @map("user_agent") @db.Text
+  referer   String?  @db.Text
+  country   String?  @db.VarChar(50)
+  clickedAt DateTime @default(now()) @map("clicked_at")
+  url       Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
+  @@index([urlId])
+  @@index([clickedAt])
+  @@index([urlId, clickedAt])
+  @@map("click_events")
+}
