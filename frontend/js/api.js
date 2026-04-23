@@ -1,62 +1,36 @@
-const API_BASE_URL = `${window.location.origin}/backend/api`;
+var API_BASE = '/api';
 
-async function apiRequest(path, options = {}) {
-	const response = await fetch(`${API_BASE_URL}${path}`, {
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-			...(options.headers || {}),
-		},
-		...options,
-	});
-
-	const contentType = response.headers.get('content-type') || '';
-	const isJson = contentType.includes('application/json');
-	const payload = isJson ? await response.json() : {};
-
-	if (!response.ok) {
-		const message = payload.error || payload.message || `HTTP ${response.status}`;
-		throw new Error(message);
-	}
-
-	return payload;
+async function apiCall(endpoint, options) {
+  var config = Object.assign({
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
+  }, options || {});
+  var res = await fetch(API_BASE + endpoint, config);
+  var data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Error ' + res.status);
+  return data;
 }
 
-window.ShortenApi = {
-	shorten(longUrl, customAlias = '', expiresAt = '') {
-		return apiRequest('/shorten.php', {
-			method: 'POST',
-			body: JSON.stringify({ longUrl, customAlias, expiresAt }),
-		});
-	},
-};
-
 window.AuthApi = {
-	register(email, password) {
-		return apiRequest('/auth/register.php', {
-			method: 'POST',
-			body: JSON.stringify({ email, password }),
-		});
-	},
-
-	login(email, password) {
-		return apiRequest('/auth/login.php', {
-			method: 'POST',
-			body: JSON.stringify({ email, password }),
-		});
-	},
-
-	me() {
-		return apiRequest('/auth/me.php', {
-			method: 'GET',
-		});
-	},
-
-	logout() {
-		return apiRequest('/auth/logout.php', {
-			method: 'POST',
-			body: JSON.stringify({}),
-		});
-	},
+  register: function(email, password) {
+    return apiCall('/auth/register', { method: 'POST', body: JSON.stringify({ email, password }) });
+  },
+  login: function(email, password) {
+    return apiCall('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+  },
+  logout: function() {
+    return apiCall('/auth/logout', { method: 'POST' });
+  },
+  me: function() {
+    return apiCall('/auth/me');
+  }
 };
 
+window.ShortenApi = {
+  shorten: function(longUrl, customAlias, expiresAt) {
+    var body = { longUrl: longUrl };
+    if (customAlias) body.customAlias = customAlias;
+    if (expiresAt) body.expiresAt = expiresAt;
+    return apiCall('/shorten', { method: 'POST', body: JSON.stringify(body) });
+  }
+};

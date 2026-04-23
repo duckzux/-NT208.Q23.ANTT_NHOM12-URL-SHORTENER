@@ -1,20 +1,15 @@
-FROM php:8.1-apache
+FROM node:18-alpine
+WORKDIR /app
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+COPY backend/package*.json ./
+RUN npm ci
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql
+COPY backend/ .
+RUN npx prisma generate
 
-# Install Redis extension
-RUN pecl install redis && docker-php-ext-enable redis
+COPY frontend/ /app/frontend/
 
-# Copy Apache virtual host config
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
+EXPOSE 3000
 
-# Copy project files
-COPY ./backend  /var/www/html/backend
-COPY ./frontend /var/www/html/frontend
-COPY .env       /var/www/html/.env
-
-EXPOSE 80
+# Run DB migrations then start server
+CMD ["sh", "-c", "npx prisma migrate deploy && node src/server.js"]
