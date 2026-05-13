@@ -4,6 +4,25 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const redis = require('./config/redis');
+
+// Redis-backed session store using ioredis (no extra dependency)
+class RedisStore extends session.Store {
+  get(sid, cb) {
+    redis.get(`sess:${sid}`)
+      .then(data => cb(null, data ? JSON.parse(data) : null))
+      .catch(cb);
+  }
+  set(sid, sess, cb) {
+    const ttl = Math.floor((sess.cookie?.maxAge || 86400000) / 1000);
+    redis.setex(`sess:${sid}`, ttl, JSON.stringify(sess))
+      .then(() => cb(null))
+      .catch(cb);
+  }
+  destroy(sid, cb) {
+    redis.del(`sess:${sid}`).then(() => cb(null)).catch(cb);
+  }
+}
 
 const app = express();
 
@@ -16,13 +35,15 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 app.use(session({
+  store: new RedisStore(),
   secret: process.env.SESSION_SECRET || 'dev-secret-change-in-production',
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production'
+    secure: process.env.COOKIE_SECURE === 'true',
+    sameSite: 'lax'
   }
 }));
 

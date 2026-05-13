@@ -13,7 +13,7 @@ async function loadDashboard() {
 
     renderTable(urls);
   } catch (err) {
-    if (err.message && err.message.includes('401')) {
+    if (err.status === 401 || (err.message && err.message.includes('401'))) {
       window.location.href = 'signin.html';
     }
   }

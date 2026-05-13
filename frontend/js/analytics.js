@@ -37,7 +37,7 @@ async function loadAnalytics(id) {
     document.getElementById('loadingMsg').style.display = 'none';
     document.getElementById('errorMsg').style.display = 'block';
     document.getElementById('errorText').textContent = err.message || 'Lỗi tải dữ liệu';
-    if (err.message && err.message.includes('401')) {
+    if (err.status === 401 || (err.message && err.message.includes('401'))) {
       setTimeout(function() { window.location.href = 'signin.html'; }, 2000);
     }
   }

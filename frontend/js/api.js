@@ -7,7 +7,11 @@ async function apiCall(endpoint, options) {
   }, options || {});
   var res = await fetch(API_BASE + endpoint, config);
   var data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Error ' + res.status);
+  if (!res.ok) {
+    var err = new Error(data.error || 'Error ' + res.status);
+    err.status = res.status;
+    throw err;
+  }
   return data;
 }
 
