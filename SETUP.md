@@ -266,15 +266,3 @@ npx prisma studio
 | NODE_ENV | Không | Environment | `development` / `production` |
 | PORT | Không | Server port | `3000` (mặc định) |
 
----
-
-## Checklist nộp bài
-
-- [ ] GitHub repo public
-- [ ] `.env.example` có trong repo, `.env` không có trong repo
-- [ ] `docker compose up --build` chạy OK
-- [ ] `npx prisma migrate deploy` tự động tạo DB
-- [ ] >= 10 commits có ý nghĩa
-- [ ] `npm test` pass
-- [ ] Live demo URL với HTTPS
-- [ ] Báo cáo PDF + Slide + Video

@@ -1,0 +1,248 @@
+/* ═══════════════════════════════════════════════════════════════
+   Responsive — mobile-first breakpoints
+   1024px  tablet landscape
+    768px  tablet portrait / large mobile
+    480px  mobile
+    360px  small mobile
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Tablet landscape (≤ 1024px) ──────────────────────────────── */
+@media (max-width: 1024px) {
+    .hero {
+        padding: 0 24px;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+    }
+
+    .nav-bar {
+        padding: 16px 24px;
+    }
+}
+
+/* ── Tablet portrait (≤ 768px) ────────────────────────────────── */
+@media (max-width: 768px) {
+    /* Navbar */
+    .nav-bar {
+        padding: 14px 20px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .nav-left {
+        gap: 14px;
+    }
+
+    /* Hero */
+    .hero {
+        margin-top: 40px;
+        padding: 0 20px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .describe {
+        font-size: 17px;
+    }
+
+    /* Shorten form */
+    .main-box {
+        padding: 20px 16px;
+        border-radius: 24px;
+    }
+
+    #custom-box {
+        width: 100%;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Dashboard stats */
+    .box {
+        gap: 12px;
+    }
+
+    .box h3 {
+        font-size: 18px;
+    }
+
+    .stat-number {
+        font-size: 30px;
+    }
+
+    /* Dashboard table */
+    .title-sheet {
+        margin-top: 24px;
+    }
+}
+
+/* ── Mobile (≤ 480px) ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+    /* Navbar — stack into two rows */
+    .nav-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+        gap: 8px;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+    }
+
+    .nav-left {
+        width: 100%;
+        gap: 12px;
+    }
+
+    .logo a {
+        font-size: 17px;
+    }
+
+    .nav-pages {
+        gap: 8px;
+    }
+
+    .nav-pages a,
+    .nav-link a {
+        font-size: 13px;
+    }
+
+    .nav-link {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .nav-link a.btn-reg {
+        margin-left: 0;
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+
+    .nav-link .nav-username {
+        font-size: 13px;
+        padding: 4px 10px;
+    }
+
+    /* Hero */
+    .hero {
+        margin-top: 24px;
+        padding: 0 14px;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .describe {
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
+
+    /* Shorten form */
+    .main-box {
+        padding: 14px;
+        border-radius: 18px;
+    }
+
+    .input-group {
+        border-radius: 14px;
+        padding: 8px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .input-group > i {
+        margin-left: 8px;
+        font-size: 17px;
+    }
+
+    .formshort {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-left: 6px;
+    }
+
+    .formshort input[type="text"] {
+        font-size: 14px;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .btn-shorten {
+        font-size: 14px;
+        padding: 8px 16px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-option {
+        font-size: 12px;
+        padding: 7px 15px;
+    }
+
+    #custom-box {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    /* Dashboard stats */
+    .box {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .leftbox,
+    .rightbox {
+        width: 100%;
+    }
+
+    .stat-number {
+        font-size: 26px;
+    }
+
+    .box h3 {
+        font-size: 16px;
+    }
+
+    /* Dashboard table actions — stack buttons */
+    .title-sheet {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    /* Sign-in / Register form */
+    .valform {
+        padding: 20px 18px;
+    }
+
+    /* Analytics charts */
+    .analytics-main {
+        padding: 1rem 0 2rem;
+    }
+}
+
+/* ── Small mobile (≤ 360px) ───────────────────────────────────── */
+@media (max-width: 360px) {
+    .hero h1 {
+        font-size: 22px;
+    }
+
+    .nav-pages {
+        display: none;
+    }
+
+    .main-box {
+        padding: 12px;
+    }
+
+    .formshort input[type="text"] {
+        font-size: 13px;
+    }
+}

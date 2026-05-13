@@ -6,14 +6,16 @@
 }
 
 .hero{
+    max-width: 1100px;
     margin: 50px auto 0;
+    padding: 0 24px 40px;
 }
 
 .box{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 230px;
+    gap: 20px;
     align-content: center;
     padding-top: 20px;
 }
