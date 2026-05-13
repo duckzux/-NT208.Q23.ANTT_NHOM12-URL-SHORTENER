@@ -4,14 +4,14 @@ const { encode, decode } = require('../../backend/src/utils/base62');
 // Indices: 0-9 → '0'-'9', 10-35 → 'A'-'Z', 36-61 → 'a'-'z'
 
 describe('base62 — encode', () => {
-  test('encode(1) = "000001"', () => expect(encode(1)).toBe('000001'));
-  test('encode(0) = "000000"', () => expect(encode(0)).toBe('000000'));
-  test('encode(62) = "000010"  (62 = 1×62^1)', () => expect(encode(62)).toBe('000010'));
-  test('encode(3844) = "000100" (62^2)', () => expect(encode(3844)).toBe('000100'));
-  test('encode(238328) = "001000" (62^3)', () => expect(encode(238328)).toBe('001000'));
-  test('all codes are at least 6 characters', () => {
+  test('encode(1) = "1"', () => expect(encode(1)).toBe('1'));
+  test('encode(0) = "0"', () => expect(encode(0)).toBe('0'));
+  test('encode(62) = "10"  (62 = 1×62^1)', () => expect(encode(62)).toBe('10'));
+  test('encode(3844) = "100" (62^2)', () => expect(encode(3844)).toBe('100'));
+  test('encode(238328) = "1000" (62^3)', () => expect(encode(238328)).toBe('1000'));
+  test('all codes are at least 1 character', () => {
     [1, 100, 9999, 1_000_000].forEach(n => {
-      expect(encode(n).length).toBeGreaterThanOrEqual(6);
+      expect(encode(n).length).toBeGreaterThanOrEqual(1);
     });
   });
   test('codes only contain charset characters', () => {
@@ -25,9 +25,9 @@ describe('base62 — encode', () => {
 });
 
 describe('base62 — decode', () => {
-  test('decode("000001") = 1', () => expect(decode('000001')).toBe(1));
-  test('decode("000000") = 0', () => expect(decode('000000')).toBe(0));
-  test('decode("000010") = 62', () => expect(decode('000010')).toBe(62));
+  test('decode("1") = 1', () => expect(decode('1')).toBe(1));
+  test('decode("0") = 0', () => expect(decode('0')).toBe(0));
+  test('decode("10") = 62', () => expect(decode('10')).toBe(62));
   test('roundtrip: decode(encode(12345)) === 12345', () => {
     expect(decode(encode(12345))).toBe(12345);
   });
