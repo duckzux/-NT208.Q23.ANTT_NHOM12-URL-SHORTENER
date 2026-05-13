@@ -56,8 +56,9 @@
 	function showResult(result) {
 		if (!resultSection || !resultLink) return;
 
-		resultLink.href = result.shortUrl;
-		resultLink.textContent = result.shortUrl;
+		var shortUrl = window.location.origin + '/' + result.shortCode;
+		resultLink.href = shortUrl;
+		resultLink.textContent = shortUrl;
 
 		if (resultOriginal) {
 			const display = result.longUrl.length > 70

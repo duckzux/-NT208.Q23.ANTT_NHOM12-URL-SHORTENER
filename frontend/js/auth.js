@@ -54,6 +54,7 @@
 
 		navContainer.innerHTML = `
 			<a href="index.html">Home</a>
+			<a href="dashboard.html">Dashboard</a>
 			<span class="nav-username">${escapeHtml(username)}</span>
 			<a href="#" class="btn-reg" id="logout-link">Logout</a>
 		`;
