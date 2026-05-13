@@ -1,5 +1,6 @@
 (function () {
 	const navContainer = document.querySelector('.nav-link');
+	const pagesContainer = document.querySelector('.nav-pages');
 	const form = document.querySelector('.valform');
 	const emailInput = document.getElementById('mail');
 	const passwordInput = document.getElementById('pwd');
@@ -35,9 +36,8 @@
 	}
 
 	function renderGuestNavbar() {
-		if (!navContainer) {
-			return;
-		}
+		if (pagesContainer) pagesContainer.innerHTML = '';
+		if (!navContainer) return;
 
 		navContainer.innerHTML = `
 			<a href="signin.html">Sign-in</a>
@@ -46,15 +46,18 @@
 	}
 
 	function renderAuthNavbar(user) {
-		if (!navContainer) {
-			return;
-		}
+		if (!navContainer) return;
 
 		const username = user.username || (user.email ? user.email.split('@')[0] : 'User');
 
+		if (pagesContainer) {
+			pagesContainer.innerHTML = `
+				<a href="index.html">Home</a>
+				<a href="dashboard.html">Dashboard</a>
+			`;
+		}
+
 		navContainer.innerHTML = `
-			<a href="index.html">Home</a>
-			<a href="dashboard.html">Dashboard</a>
 			<span class="nav-username">${escapeHtml(username)}</span>
 			<a href="#" class="btn-reg" id="logout-link">Logout</a>
 		`;

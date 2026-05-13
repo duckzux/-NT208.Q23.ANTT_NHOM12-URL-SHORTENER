@@ -10,6 +10,33 @@
     box-shadow: var(--shadow);
 }
 
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-pages {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-pages a {
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--bg-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav-pages a:hover {
+    opacity: 0.9;
+    text-decoration: underline rgba(188, 189, 255, 0.06);
+    transform: scale(0.98);
+}
+
 .logo a{
     font-size: 20px;
     font-weight: 800;
