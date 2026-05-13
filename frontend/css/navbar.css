@@ -19,11 +19,11 @@
 .nav-pages {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 .nav-pages a {
-    font-weight: 600;
+    font-weight: 300;
     text-decoration: none;
     background: var(--bg-gradient);
     -webkit-background-clip: text;
@@ -39,7 +39,7 @@
 
 .logo a{
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 900;
     background: var(--bg-gradient);
     -webkit-background-clip: text;
     background-clip: text;
