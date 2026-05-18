@@ -214,32 +214,79 @@ cd DOAN/backend
 npm test
 ```
 
+Nếu chạy bằng Docker Compose, đảm bảo stack đang up trước khi test:
+
+```bash
+cd DOAN
+docker compose up -d
+cd backend
+npm test
+```
+
 ### Load tests với k6
 
 ```bash
 # Cài k6: https://k6.io/docs/getting-started/installation/
 
-# Redirect load test
+# Chạy từ thư mục gốc project
+cd DOAN
+
+# Test redirect local (mặc định localhost:3000, short code 000001)
 k6 run tests/load/k6_redirect.js
 
+# Redirect load test với web deploy thật
+k6 run -e BASE_URL=https://sht-url.me -e SHORT_CODE=google tests/load/k6_redirect.js
+
 # Shorten load test
-k6 run tests/load/k6_shorten.js
+k6 run -e BASE_URL=https://sht-url.me tests/load/k6_shorten.js
 
 # Mixed load test
-k6 run tests/load/k6_mixed.js
+k6 run -e BASE_URL=https://sht-url.me -e SHORT_CODE=google tests/load/k6_mixed.js
 
 # Chạy với custom base URL
 k6 run -e BASE_URL=https://yourdomain.com tests/load/k6_mixed.js
 ```
 
+Lưu ý khi test web deploy thật:
+- SHORT_CODE phải tồn tại trên hệ thống, nếu không redirect test sẽ trả 404/410.
+- Có thể tạo nhanh 1 short link trước khi chạy load test:
+
+```bash
+curl -X POST https://sht-url.me/api/shorten \
+    -H "Content-Type: application/json" \
+    -d '{"longUrl":"https://example.com"}'
+```
+
+Lấy `shortCode` trong response và truyền vào `-e SHORT_CODE=<shortCode>`.
+
 ### So sánh Redis vs không Redis
 
 ```bash
+cd DOAN
+
 # Test với Redis (mặc định)
-k6 run tests/load/k6_redirect.js
+k6 run -e BASE_URL=https://sht-url.me -e SHORT_CODE=google \
+    --summary-export=redis_on.json tests/load/k6_redirect.js
 
 # Tắt Redis trong docker-compose, test lại
-# Ghi chép P50, P95, RPS để so sánh
+# Ví dụ: comment service redis rồi restart app
+docker compose up -d --build
+
+# Test không Redis
+k6 run -e BASE_URL=https://sht-url.me -e SHORT_CODE=google \
+    --summary-export=redis_off.json tests/load/k6_redirect.js
+```
+
+Nên so sánh các chỉ số sau giữa `redis_on.json` và `redis_off.json`:
+- http_req_duration p(50), p(95)
+- http_reqs (RPS trung bình)
+- checks pass rate / error rate
+
+Nếu có `jq`, có thể đọc nhanh:
+
+```bash
+jq '.metrics.http_req_duration.values, .metrics.http_reqs.values' redis_on.json
+jq '.metrics.http_req_duration.values, .metrics.http_reqs.values' redis_off.json
 ```
 
 ---

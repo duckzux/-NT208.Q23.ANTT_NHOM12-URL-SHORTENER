@@ -1,14 +1,22 @@
 const { PrismaClient } = require('@prisma/client');
+const geoip = require('geoip-lite');
 const prisma = new PrismaClient();
 
 async function recordClick(urlId, ip, userAgent, referer) {
   try {
+    let country = 'Unknown';
+    if (ip) {
+      const geo = geoip.lookup(ip);
+      if (geo && geo.country) country = geo.country;
+    }
+
     await prisma.clickEvent.create({
       data: {
         urlId,
         ipAddress: ip ? String(ip).substring(0, 45) : null,
         userAgent: userAgent || null,
-        referer: referer || null
+        referer: referer || null,
+        country
       }
     });
   } catch (err) {
