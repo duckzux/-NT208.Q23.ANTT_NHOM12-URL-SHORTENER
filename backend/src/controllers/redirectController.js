@@ -11,10 +11,8 @@ exports.redirect = async (req, res, next) => {
   try {
     const { shortCode } = req.params;
 
-    // Skip dot-files and obviously invalid patterns
     if (shortCode.includes('.')) return next();
 
-    // Redis cache-first
     let longUrl = await cacheService.get(shortCode);
 
     if (!longUrl) {

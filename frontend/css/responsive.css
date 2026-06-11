@@ -1,12 +1,5 @@
-/* ═══════════════════════════════════════════════════════════════
-   Responsive — mobile-first breakpoints
-   1024px  tablet landscape
-    768px  tablet portrait / large mobile
-    480px  mobile
-    360px  small mobile
-   ═══════════════════════════════════════════════════════════════ */
 
-/* ── Tablet landscape (≤ 1024px) ──────────────────────────────── */
+/*  Tablet landscape (≤ 1024px)*/
 @media (max-width: 1024px) {
     .hero {
         padding: 0 24px;
@@ -21,7 +14,7 @@
     }
 }
 
-/* ── Tablet portrait (≤ 768px) ────────────────────────────────── */
+/*  Tablet portrait (≤ 768px)  */
 @media (max-width: 768px) {
     /* Navbar */
     .nav-bar {
@@ -79,7 +72,7 @@
     }
 }
 
-/* ── Mobile (≤ 480px) ─────────────────────────────────────────── */
+/*  Mobile (≤ 480px)  */
 @media (max-width: 480px) {
     /* Navbar — stack into two rows */
     .nav-bar {
@@ -228,7 +221,7 @@
     }
 }
 
-/* ── Small mobile (≤ 360px) ───────────────────────────────────── */
+/*  Small mobile (≤ 360px)  */
 @media (max-width: 360px) {
     .hero h1 {
         font-size: 22px;
