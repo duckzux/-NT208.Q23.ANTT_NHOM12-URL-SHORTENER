@@ -1,0 +1,195 @@
+<mxfile host="app.diagrams.net" agent="Claude" version="24.0.0">
+  <diagram name="RegisterFlow" id="register-flow">
+    <mxGraphModel dx="1300" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- TITLE -->
+        <mxCell id="title" value="Luồng xử lý đăng ký tài khoản (POST /api/auth/register)" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="5" width="740" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- LIFELINE HEADERS -->
+        <mxCell id="h_browser" value="Browser" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_controller" value="authController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="260" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_service" value="authService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="490" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_prisma" value="Prisma + MySQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="720" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_redis" value="Redis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="930" y="45" width="110" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- LIFELINES (dashed vertical lines) -->
+        <mxCell id="ll_browser" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="125" y="95" as="sourcePoint" />
+            <mxPoint x="125" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_controller" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="95" as="sourcePoint" />
+            <mxPoint x="325" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_service" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="555" y="95" as="sourcePoint" />
+            <mxPoint x="555" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_prisma" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="785" y="95" as="sourcePoint" />
+            <mxPoint x="785" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_redis" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="985" y="95" as="sourcePoint" />
+            <mxPoint x="985" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 1: Browser → authController -->
+        <mxCell id="m1" value="1: POST /api/auth/register&#xa;{ email, password, confirmPassword }" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="125" y="130" as="sourcePoint" />
+            <mxPoint x="325" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 2: authController self-loop (validate) -->
+        <mxCell id="m2" value="2: validate&#xa;(email + password ≥ 6 chars)" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=middle;align=left;exitX=1;exitY=0.3;entryX=1;entryY=0.7;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="170" as="sourcePoint" />
+            <mxPoint x="325" y="210" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="395" y="170" />
+              <mxPoint x="395" y="210" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 3: authController → authService -->
+        <mxCell id="m3" value="3: register(email, password)" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="250" as="sourcePoint" />
+            <mxPoint x="555" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 4: authService → Prisma (findUnique) -->
+        <mxCell id="m4" value="4: prisma.user.findUnique({ where: { email } })" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="555" y="300" as="sourcePoint" />
+            <mxPoint x="785" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 5: Prisma → authService (existing or null) - dashed return -->
+        <mxCell id="m5" value="5: existing user OR null" style="endArrow=open;html=1;dashed=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="785" y="340" as="sourcePoint" />
+            <mxPoint x="555" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- NOTE: If existing → 409 -->
+        <mxCell id="note1" value="❗ Nếu tồn tại:&#xa;throw { status: 409,&#xa;message: &#39;Email đã tồn tại&#39; }" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=10;align=left;spacingLeft=4;" vertex="1" parent="1">
+          <mxGeometry x="610" y="360" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- MESSAGE 6: authService self-loop (bcrypt.hash) -->
+        <mxCell id="m6" value="6: bcrypt.hash(password, 10)&#xa;-- 10 salt rounds" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=middle;align=left;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="555" y="450" as="sourcePoint" />
+            <mxPoint x="555" y="490" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="625" y="450" />
+              <mxPoint x="625" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 7: authService → Prisma (create) -->
+        <mxCell id="m7" value="7: prisma.user.create({ email, password: hashed })" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="555" y="530" as="sourcePoint" />
+            <mxPoint x="785" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 8: Prisma → authService (new user) - dashed return -->
+        <mxCell id="m8" value="8: new user { id, email, createdAt }" style="endArrow=open;html=1;dashed=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="785" y="570" as="sourcePoint" />
+            <mxPoint x="555" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 9: authService → authController (return user) - dashed return -->
+        <mxCell id="m9" value="9: return user" style="endArrow=open;html=1;dashed=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="555" y="610" as="sourcePoint" />
+            <mxPoint x="325" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 10: authController → Redis (SETEX session) -->
+        <mxCell id="m10" value="10: SETEX sess:&amp;lt;sid&amp;gt;&#xa;{ userId, email }  TTL 7 ngày" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="660" as="sourcePoint" />
+            <mxPoint x="985" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGE 11: authController → Browser (201 + Set-Cookie) - dashed return -->
+        <mxCell id="m11" value="11: 201 Created + Set-Cookie connect.sid (httpOnly, maxAge=7d)&#xa;{ user: { id, email, createdAt } }" style="endArrow=open;html=1;dashed=1;rounded=0;fontSize=11;verticalAlign=bottom;strokeColor=#82B366;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="325" y="720" as="sourcePoint" />
+            <mxPoint x="125" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- LEGEND -->
+        <mxCell id="legend_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="60" y="790" width="980" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_title" value="&lt;b&gt;Chú thích:&lt;/b&gt;" style="text;html=1;align=left;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="75" y="795" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_arrow1" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="75" y="828" as="sourcePoint" />
+            <mxPoint x="125" y="828" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_text1" value="Synchronous call (request đồng bộ)" style="text;html=1;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="135" y="818" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_arrow2" style="endArrow=open;html=1;rounded=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="828" as="sourcePoint" />
+            <mxPoint x="430" y="828" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend_text2" value="Return value (giá trị trả về)" style="text;html=1;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="440" y="818" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_note" value="❗ Note (rẽ nhánh / ngoại lệ)" style="text;html=1;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="650" y="818" width="200" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

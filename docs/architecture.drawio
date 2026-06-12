@@ -1,0 +1,78 @@
+<mxfile host="app.diagrams.net" agent="Claude" version="24.0.0">
+  <diagram name="Architecture" id="url-shortener-arch">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- BROWSER (top) -->
+        <mxCell id="browser" value="&lt;b&gt;Browser (Client)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;HTML5 / CSS3 / JavaScript&lt;br&gt;Bootstrap 5 + Chart.js (CDN)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;verticalAlign=middle;align=center;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="240" y="40" width="420" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- NGINX -->
+        <mxCell id="nginx" value="&lt;b&gt;Nginx Reverse Proxy&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;Port 80 / 443 · SSL termination (Let&#39;s Encrypt)&lt;br&gt;proxy_pass → app:3000&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;verticalAlign=middle;align=center;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="240" y="200" width="420" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- EXPRESS APP CONTAINER -->
+        <mxCell id="express" value="&lt;b&gt;Express.js Application (port 3000)&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;verticalAlign=top;align=center;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="120" y="360" width="660" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Routes inside Express -->
+        <mxCell id="route1" value="Static  /frontend/*" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontFamily=Courier New;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="140" y="395" width="280" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="route2" value="/api/auth/*               → authController" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontFamily=Courier New;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="140" y="425" width="320" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="route3" value="/api/shorten              → urlController" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontFamily=Courier New;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="140" y="455" width="320" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="route4" value="/api/urls/*               → urlController" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontFamily=Courier New;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="460" y="395" width="300" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="route5" value="/api/urls/:id/analytics   → analyticsController" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontFamily=Courier New;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="460" y="425" width="300" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="route6" value="/:shortCode               → redirectController" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontFamily=Courier New;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="460" y="455" width="300" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="middleware" value="Middleware: trust proxy · cors · session(Redis) · rateLimiter · errorHandler" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;fontStyle=2;align=center;" vertex="1" parent="1">
+          <mxGeometry x="140" y="510" width="620" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- MYSQL -->
+        <mxCell id="mysql" value="&lt;b&gt;MySQL 8.0&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;(Prisma ORM)&lt;br&gt;&lt;br&gt;Tables:&lt;br&gt;• users&lt;br&gt;• urls&lt;br&gt;• click_events&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=14;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="200" y="650" width="200" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- REDIS -->
+        <mxCell id="redis" value="&lt;b&gt;Redis 7&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;(ioredis)&lt;br&gt;&lt;br&gt;Session store: sess:&amp;lt;sid&amp;gt;&lt;br&gt;URL cache: url:&amp;lt;code&amp;gt;&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="500" y="650" width="200" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- EDGES (connections) -->
+        <mxCell id="edge1" value="HTTPS requests" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="browser" target="nginx">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="proxy_pass" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="nginx" target="express">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="SQL (Prisma)" style="endArrow=classic;html=1;rounded=0;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="express" target="mysql">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="GET / SETEX" style="endArrow=classic;html=1;rounded=0;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=11;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="express" target="redis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Title -->
+        <mxCell id="title" value="URL Shortener — Sơ đồ kiến trúc tổng thể" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="0" width="420" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

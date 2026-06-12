@@ -1,0 +1,188 @@
+<mxfile host="app.diagrams.net" agent="Claude" version="24.0.0">
+  <diagram name="LoginFlow" id="login-flow">
+    <mxGraphModel dx="1300" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="820" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- TITLE -->
+        <mxCell id="title" value="Luồng xử lý đăng nhập (POST /api/auth/login)" style="text;html=1;align=center;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="5" width="700" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- LIFELINE HEADERS -->
+        <mxCell id="h_browser" value="Browser" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_controller" value="authController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="250" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_service" value="authService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="470" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_prisma" value="Prisma + MySQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="690" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="h_redis" value="Redis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="870" y="45" width="110" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- LIFELINES -->
+        <mxCell id="ll_browser" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="115" y="95" as="sourcePoint" />
+            <mxPoint x="115" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_controller" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="315" y="95" as="sourcePoint" />
+            <mxPoint x="315" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_service" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="535" y="95" as="sourcePoint" />
+            <mxPoint x="535" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_prisma" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="755" y="95" as="sourcePoint" />
+            <mxPoint x="755" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ll_redis" style="endArrow=none;dashed=1;html=1;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="925" y="95" as="sourcePoint" />
+            <mxPoint x="925" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ── HAPPY PATH ─────────────────────────────────── -->
+
+        <!-- MSG 1: Browser → authController -->
+        <mxCell id="m1" value="1: POST /api/auth/login  { email, password }" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="115" y="130" as="sourcePoint" />
+            <mxPoint x="315" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MSG 2: authController → authService -->
+        <mxCell id="m2" value="2: login(email, password)" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="315" y="175" as="sourcePoint" />
+            <mxPoint x="535" y="175" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MSG 3: authService → Prisma -->
+        <mxCell id="m3" value="3: prisma.user.findUnique({ where: { email } })" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="535" y="220" as="sourcePoint" />
+            <mxPoint x="755" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MSG 4 (return): Prisma → authService -->
+        <mxCell id="m4" value="4: user record OR null" style="endArrow=open;html=1;dashed=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="755" y="258" as="sourcePoint" />
+            <mxPoint x="535" y="258" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- NOTE: not found → 401 -->
+        <mxCell id="note1" value="❗ Nếu null:&#xa;throw { status: 401,&#xa;message: &#39;Invalid credentials&#39; }" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=10;align=left;spacingLeft=4;" vertex="1" parent="1">
+          <mxGeometry x="590" y="268" width="160" height="58" as="geometry" />
+        </mxCell>
+
+        <!-- MSG 5: authService self-loop — bcrypt.compare -->
+        <mxCell id="m5" value="5: bcrypt.compare(password, user.password)" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=middle;align=left;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="535" y="358" as="sourcePoint" />
+            <mxPoint x="535" y="398" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="615" y="358" />
+              <mxPoint x="615" y="398" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- NOTE: password mismatch → 401 -->
+        <mxCell id="note2" value="❗ Nếu không khớp:&#xa;throw { status: 401,&#xa;message: &#39;Invalid credentials&#39; }" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=10;align=left;spacingLeft=4;" vertex="1" parent="1">
+          <mxGeometry x="630" y="358" width="160" height="58" as="geometry" />
+        </mxCell>
+
+        <!-- MSG 6 (return): authService → authController -->
+        <mxCell id="m6" value="6: return { id, email }" style="endArrow=open;html=1;dashed=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="535" y="448" as="sourcePoint" />
+            <mxPoint x="315" y="448" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MSG 7: authController → Redis (SETEX session) -->
+        <mxCell id="m7" value="7: SETEX sess:&lt;sid&gt;  { userId, email }  TTL 7 ngày" style="endArrow=classic;html=1;rounded=0;fontSize=11;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="315" y="495" as="sourcePoint" />
+            <mxPoint x="925" y="495" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- MSG 8 (return): authController → Browser — 200 OK -->
+        <mxCell id="m8" value="8: 200 OK + Set-Cookie connect.sid (httpOnly, maxAge=7d)&#xa;{ user: { id, email, createdAt } }" style="endArrow=open;html=1;dashed=1;rounded=0;fontSize=11;verticalAlign=bottom;strokeColor=#82B366;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="315" y="548" as="sourcePoint" />
+            <mxPoint x="115" y="548" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ── ERROR PATH SUMMARY BOX ──────────────────────── -->
+        <mxCell id="errbox" value="&lt;b&gt;Error paths (cả 2 trường hợp đều trả về):&lt;/b&gt;&lt;br&gt;• Email không tồn tại  →  authController bắt exception  →  &lt;b&gt;401 { error: &#39;Invalid credentials&#39; }&lt;/b&gt;&lt;br&gt;• Password không khớp  →  authController bắt exception  →  &lt;b&gt;401 { error: &#39;Invalid credentials&#39; }&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;(Dùng cùng message để tránh lộ thông tin: email có tồn tại hay không)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=8;verticalAlign=middle;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="50" y="610" width="900" height="72" as="geometry" />
+        </mxCell>
+
+        <!-- ── LEGEND ──────────────────────────────────────── -->
+        <mxCell id="legend_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="50" y="708" width="900" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_t" value="&lt;b&gt;Chú thích:&lt;/b&gt;" style="text;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="65" y="713" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_a1" style="endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="65" y="742" as="sourcePoint" />
+            <mxPoint x="115" y="742" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg_l1" value="Synchronous call" style="text;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="125" y="732" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_a2" style="endArrow=open;dashed=1;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="742" as="sourcePoint" />
+            <mxPoint x="340" y="742" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg_l2" value="Return value" style="text;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="350" y="732" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_a3" style="endArrow=open;dashed=1;html=1;strokeColor=#82B366;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="742" as="sourcePoint" />
+            <mxPoint x="540" y="742" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg_l3" value="Success response (HTTP 2xx)" style="text;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="550" y="732" width="190" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_l4" value="❗  Ngoại lệ / rẽ nhánh lỗi" style="text;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="770" y="732" width="180" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
