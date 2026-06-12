@@ -37,6 +37,11 @@ async function shortenUrl(longUrl, userId, customAlias, expiresAt) {
       }
     });
     shortCode = base62.encode(url.id);
+    let suffix = 0;
+    while (await prisma.url.findFirst({ where: { shortCode, NOT: { id: url.id } } })) {
+      suffix++;
+      shortCode = base62.encode(url.id) + base62.encode(suffix);
+    }
     await prisma.url.update({ where: { id: url.id }, data: { shortCode } });
   }
 
