@@ -27,9 +27,10 @@ async function shortenUrl(longUrl, userId, customAlias, expiresAt) {
       }
     });
   } else {
+    const tempCode = `__tmp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
     const url = await prisma.url.create({
       data: {
-        shortCode: 'temp',
+        shortCode: tempCode,
         longUrl,
         userId: userId || null,
         expiresAt: expiresAt ? new Date(expiresAt) : null
